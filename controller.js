@@ -8,20 +8,34 @@ var numberOfOptions;
 var options = [];
 var score = 0;
 function getData() {
-    $.ajax({
-        async: false,
-        url: 'activity.json',
-        success: function(data){
-            for (var i = 0; i < data.quizlist.length; i++) {
-                questionBank[i] = data.quizlist[i].question;
-            }
-            numberOfQuestions = questionBank.length;
-            for (i = 0; i < data.answers.length; i++) {
-                options[i] = data.answers[i].option;
-            }
-            numberOfOptions = options.length;
+    // $.ajax({
+    //     async: false,
+    //     url: 'activity.json',
+    //     success: function(data){
+    //         for (var i = 0; i < data.quizlist.length; i++) {
+    //             questionBank[i] = data.quizlist[i].question;
+    //         }
+    //         numberOfQuestions = questionBank.length;
+    //         for (i = 0; i < data.answers.length; i++) {
+    //             options[i] = data.answers[i].option;
+    //         }
+    //         numberOfOptions = options.length;
+    //     }
+    // });
+    $.getJSON('activity.json', function(data) {
+        for(i=0;i<data.quizlist.length;i++){
+            questionBank[i]=data.quizlist[i].question;
         }
-    });
+        numberOfQuestions=questionBank.length;
+
+
+        for(i=0;i<data.answers.length;i++){
+            options[i]=data.answers[i].option;
+        }
+        numberOfOptions=options.length;
+
+        displayQuestion();
+    })//got .json
 }
 function displayQuestion() {
     $(stage).append('<div class="questionText">' + questionBank[questionNumber]);
@@ -83,5 +97,5 @@ function calculateScore(){
 
 $(document).ready(function () {
     getData();
-    displayQuestion();
+    // displayQuestion();
 });
